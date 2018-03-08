@@ -13,7 +13,7 @@ public class Test {
     public static void main(String[] args) {
         UserPicQuery userPicQuery = new UserPicQueryImpl();
         try {
-            List<String> urls = userPicQuery.query("12793879");
+            List<String> urls = userPicQuery.query("UserUID");
 
             final File downloadDir = new File("F:\\图库");
             urls.forEach(url -> {
