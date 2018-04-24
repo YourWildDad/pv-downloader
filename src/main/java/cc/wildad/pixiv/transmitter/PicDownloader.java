@@ -1,5 +1,7 @@
 package cc.wildad.pixiv.transmitter;
 
+import com.sun.corba.se.spi.orbutil.threadpool.ThreadPool;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -7,6 +9,9 @@ import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * 图片下载器
@@ -19,8 +24,16 @@ public class PicDownloader extends Thread {
     private URL picURL;
     private File downloadDir;
 
+    private static ExecutorService executor = Executors.newFixedThreadPool(8);
+
     public static PicDownloader newDownloader(String picUrl) throws MalformedURLException {
-        return new PicDownloader(picUrl);
+        PicDownloader picDownloader = new PicDownloader(picUrl);
+        Future<?> submit = executor.submit(picDownloader);
+        return picDownloader;
+    }
+
+    public static void shutdown() {
+        executor.shutdown();
     }
 
     /**

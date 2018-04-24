@@ -13,16 +13,17 @@ public class Test {
     public static void main(String[] args) {
         UserPicQuery userPicQuery = new UserPicQueryImpl();
         try {
-            List<String> urls = userPicQuery.query("UserUID");
+            List<String> urls = userPicQuery.query("13379747");
 
             final File downloadDir = new File("F:\\图库");
             urls.forEach(url -> {
                 try {
-                    PicDownloader.newDownloader(url).setDownloadDir(downloadDir).start();
+                    PicDownloader.newDownloader(url).setDownloadDir(downloadDir);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             });
+            PicDownloader.shutdown();
         } catch (PV_Exception e) {
             e.printStackTrace();
         }
